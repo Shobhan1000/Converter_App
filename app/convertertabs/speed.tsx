@@ -1,70 +1,44 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const weightUnits = ['Grams', 'Kilograms', 'Pounds', 'Ounces', 'Stones', 'Milligrams', 'Micrograms', 'Tonnes', 'Long Tons', 'Short Tons', 'Carats', 'Atomic Mass Units', 'Slugs', 'Drachms', 'Grains', 'Troy Ounces', 'Troy Pounds', 'Pennyweights', 'Hogsheads', 'Quarters', 'Hundredweights', 'Metric Tons'];
+const speedUnits = ['Meters per second', 'Kilometers per hour', 'Miles per hour', 'Feet per second', 'Feet per minute', 'Knots', 'Mach', 'Speed of light'];
 
-const Weight: React.FC = () => {
+const Speed: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [fromUnit, setFromUnit] = useState('Grams');
-  const [toUnit, setToUnit] = useState('Kilograms');
+  const [fromUnit, setFromUnit] = useState('Meters per second');
+  const [toUnit, setToUnit] = useState('Kilometers per hour');
   const [result, setResult] = useState('');
 
     const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
 
-    let grams: number;
+    // Convert input to meters per second
+    let mps: number;
     switch (from) {
-        case 'Grams': grams = val; break;
-        case 'Kilograms': grams = val * 1000; break;
-        case 'Pounds': grams = val * 453.59237; break;
-        case 'Ounces': grams = val * 28.3495231; break;
-        case 'Stones': grams = val * 6350.29318; break;
-        case 'Milligrams': grams = val * 0.001; break;
-        case 'Micrograms': grams = val * 1e-6; break;
-        case 'Tonnes': grams = val * 1e6; break;
-        case 'Long Tons': grams = val * 1.0160469088e6; break;
-        case 'Short Tons': grams = val * 907184.74; break;
-        case 'Carats': grams = val * 0.2; break;
-        case 'Atomic Mass Units': grams = val * 1.66053906660e-24; break;
-        case 'Slugs': grams = val * 14593.903; break;
-        case 'Drachms': grams = val * 1.7718451953125; break;
-        case 'Grains': grams = val * 0.06479891; break;
-        case 'Troy Ounces': grams = val * 31.1034768; break;
-        case 'Troy Pounds': grams = val * 373.2417216; break;
-        case 'Pennyweights': grams = val * 1.55517384; break;
-        case 'Hogsheads': grams = val * 23848000; break; // Approximate, depends on substance
-        case 'Quarters': grams = val * 12700.58636; break; // UK quarter
-        case 'Hundredweights': grams = val * 50802.34544; break; // UK cwt
-        case 'Metric Tons': grams = val * 1e6; break;
-        default: grams = val;
+        case 'Meters per second': mps = val; break;
+        case 'Kilometers per hour': mps = val / 3.6; break;
+        case 'Miles per hour': mps = val * 0.44704; break;
+        case 'Feet per second': mps = val * 0.3048; break;
+        case 'Feet per minute': mps = val * 0.00508; break;
+        case 'Knots': mps = val * 0.514444; break;
+        case 'Mach': mps = val * 340.29; break; // Mach 1 at sea level, 20°C
+        case 'Speed of light': mps = val * 299792458; break;
+        default: mps = val;
     }
 
+    // Convert meters per second to target unit
     let converted: number;
     switch (to) {
-        case 'Grams': converted = grams; break;
-        case 'Kilograms': converted = grams / 1000; break;
-        case 'Pounds': converted = grams / 453.59237; break;
-        case 'Ounces': converted = grams / 28.3495231; break;
-        case 'Stones': converted = grams / 6350.29318; break;
-        case 'Milligrams': converted = grams / 0.001; break;
-        case 'Micrograms': converted = grams / 1e-6; break;
-        case 'Tonnes': converted = grams / 1e6; break;
-        case 'Long Tons': converted = grams / 1.0160469088e6; break;
-        case 'Short Tons': converted = grams / 907184.74; break;
-        case 'Carats': converted = grams / 0.2; break;
-        case 'Atomic Mass Units': converted = grams / 1.66053906660e-24; break;
-        case 'Slugs': converted = grams / 14593.903; break;
-        case 'Drachms': converted = grams / 1.7718451953125; break;
-        case 'Grains': converted = grams / 0.06479891; break;
-        case 'Troy Ounces': converted = grams / 31.1034768; break;
-        case 'Troy Pounds': converted = grams / 373.2417216; break;
-        case 'Pennyweights': converted = grams / 1.55517384; break;
-        case 'Hogsheads': converted = grams / 23848000; break; // Approximate
-        case 'Quarters': converted = grams / 12700.58636; break;
-        case 'Hundredweights': converted = grams / 50802.34544; break;
-        case 'Metric Tons': converted = grams / 1e6; break;
-        default: converted = grams;
+        case 'Meters per second': converted = mps; break;
+        case 'Kilometers per hour': converted = mps * 3.6; break;
+        case 'Miles per hour': converted = mps / 0.44704; break;
+        case 'Feet per second': converted = mps / 0.3048; break;
+        case 'Feet per minute': converted = mps / 0.00508; break;
+        case 'Knots': converted = mps / 0.514444; break;
+        case 'Mach': converted = mps / 340.29; break;
+        case 'Speed of light': converted = mps / 299792458; break;
+        default: converted = mps;
     }
 
     setResult(converted.toFixed(6));
@@ -112,7 +86,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>From</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {speedUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === fromUnit && styles.activeUnit]}
@@ -128,7 +102,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>To</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {speedUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === toUnit && styles.activeUnit]}
@@ -165,7 +139,7 @@ const Weight: React.FC = () => {
   );
 };
 
-export default Weight;
+export default Speed;
 
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#f6f6f6' },

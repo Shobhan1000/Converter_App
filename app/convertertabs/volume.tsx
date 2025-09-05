@@ -1,70 +1,84 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const weightUnits = ['Grams', 'Kilograms', 'Pounds', 'Ounces', 'Stones', 'Milligrams', 'Micrograms', 'Tonnes', 'Long Tons', 'Short Tons', 'Carats', 'Atomic Mass Units', 'Slugs', 'Drachms', 'Grains', 'Troy Ounces', 'Troy Pounds', 'Pennyweights', 'Hogsheads', 'Quarters', 'Hundredweights', 'Metric Tons'];
+const volumeUnits = ['Milliliters', 'Liters', 'Deciliters', 'Centiliters', 'Cubic Milliliters', 'Cubic Centimeters', 'Cubic Meters', 'Cubic Inches', 'Cubic Feet', 'Cubic Yards', 'Pints', 'Quarts', 'Gallons', 'Fluid Ounces', 'Teaspoons', 'Tablespoons', 'Drops', 'Barrels', 'Hogsheads', 'Hectoliters', 'Cups', 'Minims', 'Gills', 'Cord', 'Board Feet', 'Acre-Feet', 'Bushels', 'Pecks'];
 
-const Weight: React.FC = () => {
+const Volume: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [fromUnit, setFromUnit] = useState('Grams');
-  const [toUnit, setToUnit] = useState('Kilograms');
+  const [fromUnit, setFromUnit] = useState('Milliliters');
+  const [toUnit, setToUnit] = useState('Liters');
   const [result, setResult] = useState('');
 
     const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
 
-    let grams: number;
+    // Convert input to liters
+    let liters: number;
     switch (from) {
-        case 'Grams': grams = val; break;
-        case 'Kilograms': grams = val * 1000; break;
-        case 'Pounds': grams = val * 453.59237; break;
-        case 'Ounces': grams = val * 28.3495231; break;
-        case 'Stones': grams = val * 6350.29318; break;
-        case 'Milligrams': grams = val * 0.001; break;
-        case 'Micrograms': grams = val * 1e-6; break;
-        case 'Tonnes': grams = val * 1e6; break;
-        case 'Long Tons': grams = val * 1.0160469088e6; break;
-        case 'Short Tons': grams = val * 907184.74; break;
-        case 'Carats': grams = val * 0.2; break;
-        case 'Atomic Mass Units': grams = val * 1.66053906660e-24; break;
-        case 'Slugs': grams = val * 14593.903; break;
-        case 'Drachms': grams = val * 1.7718451953125; break;
-        case 'Grains': grams = val * 0.06479891; break;
-        case 'Troy Ounces': grams = val * 31.1034768; break;
-        case 'Troy Pounds': grams = val * 373.2417216; break;
-        case 'Pennyweights': grams = val * 1.55517384; break;
-        case 'Hogsheads': grams = val * 23848000; break; // Approximate, depends on substance
-        case 'Quarters': grams = val * 12700.58636; break; // UK quarter
-        case 'Hundredweights': grams = val * 50802.34544; break; // UK cwt
-        case 'Metric Tons': grams = val * 1e6; break;
-        default: grams = val;
+        case 'Milliliters': liters = val / 1000; break;
+        case 'Liters': liters = val; break;
+        case 'Deciliters': liters = val / 10; break;
+        case 'Centiliters': liters = val / 100; break;
+        case 'Cubic Milliliters': liters = val / 1e6; break;
+        case 'Cubic Centimeters': liters = val / 1000; break;
+        case 'Cubic Meters': liters = val * 1000; break;
+        case 'Cubic Inches': liters = val * 0.016387064; break;
+        case 'Cubic Feet': liters = val * 28.3168466; break;
+        case 'Cubic Yards': liters = val * 764.554858; break;
+        case 'Fluid Ounces': liters = val * 0.0295735296; break; // US fluid ounce
+        case 'Pints': liters = val * 0.473176473; break; // US pint
+        case 'Quarts': liters = val * 0.946352946; break; // US quart
+        case 'Gallons': liters = val * 3.785411784; break; // US gallon
+        case 'Teaspoons': liters = val * 0.00492892159; break; // US teaspoon
+        case 'Tablespoons': liters = val * 0.0147867648; break; // US tablespoon
+        case 'Drops': liters = val * 0.00005; break; // Approximate
+        case 'Barrels': liters = val * 158.987295; break; // Oil barrel
+        case 'Hogsheads': liters = val * 238.480942; break; // US liquid hogshead
+        case 'Hectoliters': liters = val * 100; break;
+        case 'Cups': liters = val * 0.236588236; break; // US cup
+        case 'Minims': liters = val * 0.0000616115; break; // US minim
+        case 'Gills': liters = val * 0.118294118; break; // US gill
+        case 'Cord': liters = val * 3636.8729; break;
+        case 'Board Feet': liters = val * 0.002359737; break;
+        case 'Acre-Feet': liters = val * 1233481.84; break;
+        case 'Bushels': liters = val * 35.2390702; break; // US bushel
+        case 'Pecks': liters = val * 8.80976754; break; // US peck
+        default: liters = val;
     }
 
+    // Convert liters to target unit
     let converted: number;
     switch (to) {
-        case 'Grams': converted = grams; break;
-        case 'Kilograms': converted = grams / 1000; break;
-        case 'Pounds': converted = grams / 453.59237; break;
-        case 'Ounces': converted = grams / 28.3495231; break;
-        case 'Stones': converted = grams / 6350.29318; break;
-        case 'Milligrams': converted = grams / 0.001; break;
-        case 'Micrograms': converted = grams / 1e-6; break;
-        case 'Tonnes': converted = grams / 1e6; break;
-        case 'Long Tons': converted = grams / 1.0160469088e6; break;
-        case 'Short Tons': converted = grams / 907184.74; break;
-        case 'Carats': converted = grams / 0.2; break;
-        case 'Atomic Mass Units': converted = grams / 1.66053906660e-24; break;
-        case 'Slugs': converted = grams / 14593.903; break;
-        case 'Drachms': converted = grams / 1.7718451953125; break;
-        case 'Grains': converted = grams / 0.06479891; break;
-        case 'Troy Ounces': converted = grams / 31.1034768; break;
-        case 'Troy Pounds': converted = grams / 373.2417216; break;
-        case 'Pennyweights': converted = grams / 1.55517384; break;
-        case 'Hogsheads': converted = grams / 23848000; break; // Approximate
-        case 'Quarters': converted = grams / 12700.58636; break;
-        case 'Hundredweights': converted = grams / 50802.34544; break;
-        case 'Metric Tons': converted = grams / 1e6; break;
-        default: converted = grams;
+        case 'Milliliters': converted = liters * 1000; break;
+        case 'Liters': converted = liters; break;
+        case 'Deciliters': converted = liters * 10; break;
+        case 'Centiliters': converted = liters * 100; break;
+        case 'Cubic Milliliters': converted = liters * 1e6; break;
+        case 'Cubic Centimeters': converted = liters * 1000; break;
+        case 'Cubic Meters': converted = liters / 1000; break;
+        case 'Cubic Inches': converted = liters / 0.016387064; break;
+        case 'Cubic Feet': converted = liters / 28.3168466; break;
+        case 'Cubic Yards': converted = liters / 764.554858; break;
+        case 'Fluid Ounces': converted = liters / 0.0295735296; break;
+        case 'Pints': converted = liters / 0.473176473; break;
+        case 'Quarts': converted = liters / 0.946352946; break;
+        case 'Gallons': converted = liters / 3.785411784; break;
+        case 'Teaspoons': converted = liters / 0.00492892159; break;
+        case 'Tablespoons': converted = liters / 0.0147867648; break;
+        case 'Drops': converted = liters / 0.00005; break;
+        case 'Barrels': converted = liters / 158.987295; break;
+        case 'Hogsheads': converted = liters / 238.480942; break;
+        case 'Hectoliters': converted = liters / 100; break;
+        case 'Cups': converted = liters / 0.236588236; break;
+        case 'Minims': converted = liters / 0.0000616115; break;
+        case 'Gills': converted = liters / 0.118294118; break;
+        case 'Cord': converted = liters / 3636.8729; break;
+        case 'Board Feet': converted = liters / 0.002359737; break;
+        case 'Acre-Feet': converted = liters / 1233481.84; break;
+        case 'Bushels': converted = liters / 35.2390702; break;
+        case 'Pecks': converted = liters / 8.80976754; break;
+        default: converted = liters;
     }
 
     setResult(converted.toFixed(6));
@@ -112,7 +126,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>From</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {volumeUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === fromUnit && styles.activeUnit]}
@@ -128,7 +142,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>To</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {volumeUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === toUnit && styles.activeUnit]}
@@ -165,7 +179,7 @@ const Weight: React.FC = () => {
   );
 };
 
-export default Weight;
+export default Volume;
 
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#f6f6f6' },

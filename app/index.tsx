@@ -8,7 +8,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // 2️⃣ Import the new Distance converter page
 import Distance from './convertertabs/distance';
+import Speed from './convertertabs/speed';
 import Temperature from './convertertabs/temperature';
+import Time from './convertertabs/time';
+import Volume from './convertertabs/volume';
 import Weight from './convertertabs/weight';
 
 // 3️⃣ Define navigation types
@@ -17,6 +20,9 @@ type RootStackParamList = {
   Distance: undefined;
   Weight: undefined;
   Temperature: undefined;
+  Time: undefined;
+  Volume: undefined;
+  Speed: undefined;
   Category: { name: string };
 };
 
@@ -31,6 +37,9 @@ const categories = [
   { name: 'Distance', icon: 'straighten' },
   { name: 'Weight', icon: 'fitness-center' },
   { name: 'Temperature', icon: 'thermostat' },
+  { name: 'Time', icon: 'access-time' },
+  { name: 'Volume', icon: 'invert-colors' },
+  { name: 'Speed', icon: 'speed' },
 ];
 
 // 6️⃣ Home Screen
@@ -50,6 +59,12 @@ const HomeScreen: React.FC<{ navigation: HomeScreenNavigationProp }> = ({ naviga
               navigation.navigate('Weight'); // Navigate to Weight.tsx
             } else if (cat.name === 'Temperature') {
               navigation.navigate('Temperature'); // Navigate to Temperature.tsx
+            } else if (cat.name === 'Time') {
+              navigation.navigate('Time'); // Navigate to Time.tsx
+            } else if (cat.name === 'Volume') {
+              navigation.navigate('Volume'); // Navigate to Volume.tsx
+            } else if (cat.name === 'Speed') {
+              navigation.navigate('Speed'); // Navigate to Speed.tsx
             } else {
               navigation.navigate('Category', { name: cat.name }); // Other categories
             }
@@ -98,6 +113,9 @@ export default function App() {
         <Stack.Screen name="Distance" component={Distance} />
         <Stack.Screen name="Weight" component={Weight} />
         <Stack.Screen name="Temperature" component={Temperature} />
+        <Stack.Screen name="Time" component={Time} />
+        <Stack.Screen name="Volume" component={Volume} />
+        <Stack.Screen name="Speed" component={Speed} />
         <Stack.Screen name="Category" component={CategoryScreen} />
       </Stack.Navigator>
     </SafeAreaProvider>

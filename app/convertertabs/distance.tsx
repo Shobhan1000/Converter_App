@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const distanceUnits = ['Meters', 'Kilometers', 'Miles', 'Yards', 'Feet', 'Inches', 'Nautical Miles', 'Light Years', 'Parsecs'];
+const distanceUnits = ['Meters', 'Kilometers', 'Miles', 'Yards', 'Feet', 'Inches', 'Nautical Miles', 'Light Years', 'Parsecs', 'Centimeters', 'Millimeters', 'Micrometers', 'Nanometers', 'Decimeters', 'Leagues', 'Furlongs', 'Chains', 'Rod', 'Link', 'Astronomical Units'];
 
 const Distance: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
@@ -9,41 +9,62 @@ const Distance: React.FC = () => {
   const [toUnit, setToUnit] = useState('Kilometers');
   const [result, setResult] = useState('');
 
-  const convert = (value: string, from: string, to: string) => {
+    const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
 
     let meters: number;
     switch (from) {
-      case 'Meters': meters = val; break;
-      case 'Kilometers': meters = val * 1000; break;
-      case 'Miles': meters = val * 1609.34; break;
-      case 'Yards': meters = val * 0.9144; break;
-      case 'Feet': meters = val * 0.3048; break;
-      case 'Inches': meters = val * 0.0254; break;
-      case 'Nautical Miles': meters = val * 1852; break;
-      case 'Light Years': meters = val * 9.461e15; break;
-      case 'Parsecs': meters = val * 3.086e16; break;
-      default: meters = val;
+        case 'Meters': meters = val; break;
+        case 'Kilometers': meters = val * 1000; break;
+        case 'Miles': meters = val * 1609.344; break;
+        case 'Yards': meters = val * 0.9144; break;
+        case 'Feet': meters = val * 0.3048; break;
+        case 'Inches': meters = val * 0.0254; break;
+        case 'Nautical Miles': meters = val * 1852; break;
+        case 'Light Years': meters = val * 9.4607e15; break;
+        case 'Parsecs': meters = val * 3.0857e16; break;
+        case 'Centimeters': meters = val * 0.01; break;
+        case 'Millimeters': meters = val * 0.001; break;
+        case 'Micrometers': meters = val * 1e-6; break;
+        case 'Nanometers': meters = val * 1e-9; break;
+        case 'Decimeters': meters = val * 0.1; break;
+        case 'Leagues': meters = val * 4828.032; break;
+        case 'Furlongs': meters = val * 201.168; break;
+        case 'Chains': meters = val * 20.1168; break;
+        case 'Rod': meters = val * 5.0292; break;
+        case 'Link': meters = val * 0.201168; break;
+        case 'Astronomical Units': meters = val * 1.495978707e11; break;
+        default: meters = val;
     }
 
     let converted: number;
     switch (to) {
-      case 'Meters': converted = meters; break;
-      case 'Kilometers': converted = meters / 1000; break;
-      case 'Miles': converted = meters / 1609.34; break;
-      case 'Yards': converted = meters / 0.9144; break;
-      case 'Feet': converted = meters / 0.3048; break;
-      case 'Inches': converted = meters / 0.0254; break;
-      case 'Nautical Miles': converted = meters / 1852; break;
-      case 'Light Years': converted = meters / 9.461e15; break;
-      case 'Parsecs': converted = meters / 3.086e16; break;
-      default: converted = meters;
+        case 'Meters': converted = meters; break;
+        case 'Kilometers': converted = meters / 1000; break;
+        case 'Miles': converted = meters / 1609.344; break;
+        case 'Yards': converted = meters / 0.9144; break;
+        case 'Feet': converted = meters / 0.3048; break;
+        case 'Inches': converted = meters / 0.0254; break;
+        case 'Nautical Miles': converted = meters / 1852; break;
+        case 'Light Years': converted = meters / 9.4607e15; break;
+        case 'Parsecs': converted = meters / 3.0857e16; break;
+        case 'Centimeters': converted = meters / 0.01; break;
+        case 'Millimeters': converted = meters / 0.001; break;
+        case 'Micrometers': converted = meters / 1e-6; break;
+        case 'Nanometers': converted = meters / 1e-9; break;
+        case 'Decimeters': converted = meters / 0.1; break;
+        case 'Leagues': converted = meters / 4828.032; break;
+        case 'Furlongs': converted = meters / 201.168; break;
+        case 'Chains': converted = meters / 20.1168; break;
+        case 'Rod': converted = meters / 5.0292; break;
+        case 'Link': converted = meters / 0.201168; break;
+        case 'Astronomical Units': converted = meters / 1.495978707e11; break;
+        default: converted = meters;
     }
 
     setResult(converted.toFixed(6));
-  };
-
+    };
   const handleKeyPress = (key: string) => {
     if (key === '⌫') {
       const newValue = inputValue.slice(0, -1);
