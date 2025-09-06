@@ -3,11 +3,16 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
-import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // 2️⃣ Import the new Distance converter page
+import Area from './convertertabs/area';
+import DataStore from './convertertabs/datastorage';
 import Distance from './convertertabs/distance';
+import FuelMileage from './convertertabs/fuelmileage';
+import Power from './convertertabs/power';
+import Pressure from './convertertabs/pressure';
 import Speed from './convertertabs/speed';
 import Temperature from './convertertabs/temperature';
 import Time from './convertertabs/time';
@@ -23,6 +28,11 @@ type RootStackParamList = {
   Time: undefined;
   Volume: undefined;
   Speed: undefined;
+  Area: undefined;
+  DataStorage: undefined;
+  FuelMileage: undefined;
+  Power: undefined;
+  Pressure: undefined;
   Category: { name: string };
 };
 
@@ -34,45 +44,70 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // 5️⃣ Define categories
 const categories = [
+  { name: 'Area', icon: 'crop' },
+  { name: 'Data Storage', icon: 'storage' },
   { name: 'Distance', icon: 'straighten' },
-  { name: 'Weight', icon: 'fitness-center' },
+  { name: 'Fuel Mileage', icon: 'local-gas-station' },
+  { name: 'Power', icon: 'bolt' },
+  { name: 'Pressure', icon: 'compress' },
+  { name: 'Speed', icon: 'speed' },
   { name: 'Temperature', icon: 'thermostat' },
   { name: 'Time', icon: 'access-time' },
   { name: 'Volume', icon: 'invert-colors' },
-  { name: 'Speed', icon: 'speed' },
+  { name: 'Weight', icon: 'fitness-center' },
 ];
 
 // 6️⃣ Home Screen
 const HomeScreen: React.FC<{ navigation: HomeScreenNavigationProp }> = ({ navigation }) => {
+  // Split categories into rows of 3
+  const rows = [];
+  for (let i = 0; i < categories.length; i += 3) {
+    rows.push(categories.slice(i, i + 3));
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Unit Converter</Text>
-      {categories.map((cat) => (
-        <TouchableOpacity
-          key={cat.name}
-          style={styles.card}
-          activeOpacity={0.8}
-          onPress={() => {
-            if (cat.name === 'Distance') {
-              navigation.navigate('Distance'); // Navigate to Distance.tsx
-            } else if (cat.name === 'Weight') {
-              navigation.navigate('Weight'); // Navigate to Weight.tsx
-            } else if (cat.name === 'Temperature') {
-              navigation.navigate('Temperature'); // Navigate to Temperature.tsx
-            } else if (cat.name === 'Time') {
-              navigation.navigate('Time'); // Navigate to Time.tsx
-            } else if (cat.name === 'Volume') {
-              navigation.navigate('Volume'); // Navigate to Volume.tsx
-            } else if (cat.name === 'Speed') {
-              navigation.navigate('Speed'); // Navigate to Speed.tsx
-            } else {
-              navigation.navigate('Category', { name: cat.name }); // Other categories
-            }
-          }}
-        >
-          <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
-          <Text style={styles.cardText}>{cat.name}</Text>
-        </TouchableOpacity>
+      {rows.map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.row}>
+          {row.map((cat) => (
+            <TouchableOpacity
+              key={cat.name}
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => {
+                if (cat.name === 'Distance') {
+                  navigation.navigate('Distance');
+                } else if (cat.name === 'Weight') {
+                  navigation.navigate('Weight');
+                } else if (cat.name === 'Temperature') {
+                  navigation.navigate('Temperature');
+                } else if (cat.name === 'Time') {
+                  navigation.navigate('Time');
+                } else if (cat.name === 'Volume') {
+                  navigation.navigate('Volume');
+                } else if (cat.name === 'Speed') {
+                  navigation.navigate('Speed');
+                } else if (cat.name === 'Area') {
+                  navigation.navigate('Area');
+                } else if (cat.name === 'Data Storage') {
+                  navigation.navigate('DataStorage');
+                } else if (cat.name === 'Fuel Mileage') {
+                  navigation.navigate('FuelMileage');
+                } else if (cat.name === 'Power') {
+                  navigation.navigate('Power');
+                } else if (cat.name === 'Pressure') {
+                  navigation.navigate('Pressure');
+                } else {
+                  navigation.navigate('Category', { name: cat.name });
+                }
+              }}
+            >
+              <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
+              <Text style={styles.cardText}>{cat.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       ))}
     </ScrollView>
   );
@@ -116,6 +151,11 @@ export default function App() {
         <Stack.Screen name="Time" component={Time} />
         <Stack.Screen name="Volume" component={Volume} />
         <Stack.Screen name="Speed" component={Speed} />
+        <Stack.Screen name="Area" component={Area} />
+        <Stack.Screen name="DataStorage" component={DataStore} />
+        <Stack.Screen name="FuelMileage" component={FuelMileage} />
+        <Stack.Screen name="Power" component={Power} />
+        <Stack.Screen name="Pressure" component={Pressure} />
         <Stack.Screen name="Category" component={CategoryScreen} />
       </Stack.Navigator>
     </SafeAreaProvider>
@@ -126,10 +166,37 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#f6f6f6',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 0,
+  },
+  card: {
+    backgroundColor: '#fff',
+    flex: 1,
+    borderRadius: 12,
+    padding: 10,
+    margin: 8,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
+    minWidth: 0,
+    maxWidth: '32%',
+  },
+  cardText: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: 10,
+    color: '#6200ee',
+    textAlign: 'center',
   },
   title: {
     fontSize: 28,
@@ -142,24 +209,5 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 20,
     textAlign: 'center',
-  },
-  card: {
-    backgroundColor: '#fff',
-    width: '80%',
-    borderRadius: 12,
-    padding: 25,
-    marginVertical: 12,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  cardText: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginTop: 10,
-    color: '#6200ee',
   },
 });
