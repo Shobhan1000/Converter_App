@@ -4,14 +4,16 @@ import { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import admobConfig from './config/admob';
 
 // 2️⃣ Import the new Distance converter page
 import Angle from './convertertabs/angle';
 import Area from './convertertabs/area';
 import Currency from './convertertabs/currency';
 import DataSpeed from './convertertabs/dataspeed';
-import DataStore from './convertertabs/datastorage';
+import DataStorage from './convertertabs/datastorage';
 import Distance from './convertertabs/distance';
 import Energy from './convertertabs/energy';
 import Force from './convertertabs/force';
@@ -80,75 +82,63 @@ const categories = [
 
 // 6️⃣ Home Screen
 const HomeScreen: React.FC<{ navigation: HomeScreenNavigationProp }> = ({ navigation }) => {
-  // Split categories into rows of 3
   const rows = [];
-  for (let i = 0; i < categories.length; i += 3) {
-    rows.push(categories.slice(i, i + 3));
-  }
+  for (let i = 0; i < categories.length; i += 3) rows.push(categories.slice(i, i + 3));
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Unit Converter</Text>
-      {rows.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {row.map((cat) => (
-            <TouchableOpacity
-              key={cat.name}
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => {
-                if (cat.name === 'Distance') {
-                  navigation.navigate('Distance');
-                } else if (cat.name === 'Weight') {
-                  navigation.navigate('Weight');
-                } else if (cat.name === 'Temperature') {
-                  navigation.navigate('Temperature');
-                } else if (cat.name === 'Time') {
-                  navigation.navigate('Time');
-                } else if (cat.name === 'Volume') {
-                  navigation.navigate('Volume');
-                } else if (cat.name === 'Speed') {
-                  navigation.navigate('Speed');
-                } else if (cat.name === 'Area') {
-                  navigation.navigate('Area');
-                } else if (cat.name === 'Data Storage') {
-                  navigation.navigate('DataStorage');
-                } else if (cat.name === 'Fuel Mileage') {
-                  navigation.navigate('FuelMileage');
-                } else if (cat.name === 'Power') {
-                  navigation.navigate('Power');
-                } else if (cat.name === 'Pressure') {
-                  navigation.navigate('Pressure');
-                } else if (cat.name === 'Currency') {
-                  navigation.navigate('Currency');
-                } else if (cat.name === 'Angle') {
-                  navigation.navigate('Angle');
-                } else if (cat.name === 'Energy') {
-                  navigation.navigate('Energy');
-                } else if (cat.name === 'Force') {
-                  navigation.navigate('Force');
-                } else if (cat.name === 'Torque') {
-                  navigation.navigate('Torque');
-                } else if (cat.name === 'Shoe Size') {
-                  navigation.navigate('ShoeSize');
-                } else if (cat.name === 'Data Speed') {
-                  navigation.navigate('DataSpeed');
-                } else {
-                  navigation.navigate('Category', { name: cat.name });
-                }
-              }}
-            >
+    <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
+      <ScrollView contentContainerStyle={{ padding: 20, alignItems: 'center' }}>
+        <Text style={styles.title}>Unit Converter</Text>
+        {rows.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cat) => (
+              <TouchableOpacity
+                key={cat.name}
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => {
+                  if (cat.name === 'Distance') navigation.navigate('Distance');
+                  else if (cat.name === 'Weight') navigation.navigate('Weight');
+                  else if (cat.name === 'Temperature') navigation.navigate('Temperature');
+                  else if (cat.name === 'Time') navigation.navigate('Time');
+                  else if (cat.name === 'Volume') navigation.navigate('Volume');
+                  else if (cat.name === 'Speed') navigation.navigate('Speed');
+                  else if (cat.name === 'Area') navigation.navigate('Area');
+                  else if (cat.name === 'Data Storage') navigation.navigate('DataStorage');
+                  else if (cat.name === 'Fuel Mileage') navigation.navigate('FuelMileage');
+                  else if (cat.name === 'Power') navigation.navigate('Power');
+                  else if (cat.name === 'Pressure') navigation.navigate('Pressure');
+                  else if (cat.name === 'Currency') navigation.navigate('Currency');
+                  else if (cat.name === 'Angle') navigation.navigate('Angle');
+                  else if (cat.name === 'Energy') navigation.navigate('Energy');
+                  else if (cat.name === 'Force') navigation.navigate('Force');
+                  else if (cat.name === 'Torque') navigation.navigate('Torque');
+                  else if (cat.name === 'Shoe Size') navigation.navigate('ShoeSize');
+                  else if (cat.name === 'Data Speed') navigation.navigate('DataSpeed');
+                  else navigation.navigate('Category', { name: cat.name });
+                }}
+              >
                 {cat.iconSet === 'MaterialCommunityIcons' ? (
-                <MaterialCommunityIcons name={cat.icon as any} size={50} color="#6200ee" />
-              ) : (
-                <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
-              )}
-              <Text style={styles.cardText}>{cat.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      ))}
-    </ScrollView>
+                  <MaterialCommunityIcons name={cat.icon as any} size={50} color="#6200ee" />
+                ) : (
+                  <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
+                )}
+                <Text style={styles.cardText}>{cat.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* Sticky Banner Ad */}
+      <View style={{ alignItems: 'center', paddingVertical: 10 }}>
+        <BannerAd
+          unitId={admobConfig.bannerUnitId}
+          size={BannerAdSize.FULL_BANNER}
+          requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+        />
+      </View>
+    </View>
   );
 };
 
@@ -191,7 +181,7 @@ export default function App() {
         <Stack.Screen name="Volume" component={Volume} />
         <Stack.Screen name="Speed" component={Speed} />
         <Stack.Screen name="Area" component={Area} />
-        <Stack.Screen name="DataStorage" component={DataStore} />
+        <Stack.Screen name="DataStorage" component={DataStorage} />
         <Stack.Screen name="FuelMileage" component={FuelMileage} />
         <Stack.Screen name="Power" component={Power} />
         <Stack.Screen name="Pressure" component={Pressure} />
