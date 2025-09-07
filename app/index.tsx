@@ -1,5 +1,5 @@
 // 1️⃣ Import necessary packages
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
@@ -7,15 +7,22 @@ import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // 2️⃣ Import the new Distance converter page
+import Angle from './convertertabs/angle';
 import Area from './convertertabs/area';
+import Currency from './convertertabs/currency';
+import DataSpeed from './convertertabs/dataspeed';
 import DataStore from './convertertabs/datastorage';
 import Distance from './convertertabs/distance';
+import Energy from './convertertabs/energy';
+import Force from './convertertabs/force';
 import FuelMileage from './convertertabs/fuelmileage';
 import Power from './convertertabs/power';
 import Pressure from './convertertabs/pressure';
+import ShoeSize from './convertertabs/shoesize';
 import Speed from './convertertabs/speed';
 import Temperature from './convertertabs/temperature';
 import Time from './convertertabs/time';
+import Torque from './convertertabs/torque';
 import Volume from './convertertabs/volume';
 import Weight from './convertertabs/weight';
 
@@ -33,6 +40,13 @@ type RootStackParamList = {
   FuelMileage: undefined;
   Power: undefined;
   Pressure: undefined;
+  Currency: undefined;
+  Angle: undefined;
+  Energy: undefined;
+  Force: undefined;
+  Torque: undefined;
+  ShoeSize: undefined;
+  DataSpeed: undefined;
   Category: { name: string };
 };
 
@@ -44,15 +58,22 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // 5️⃣ Define categories
 const categories = [
+  { name: 'Angle', icon: 'change-history' },
   { name: 'Area', icon: 'crop' },
+  { name: 'Currency', icon: 'attach-money' },
+  { name: 'Data Speed', icon: 'access-point-network', iconSet: 'MaterialCommunityIcons' },
   { name: 'Data Storage', icon: 'storage' },
   { name: 'Distance', icon: 'straighten' },
+  { name: 'Energy', icon: 'flash-on' },
+  { name: 'Force', icon: 'fitness-center' },
   { name: 'Fuel Mileage', icon: 'local-gas-station' },
   { name: 'Power', icon: 'bolt' },
   { name: 'Pressure', icon: 'compress' },
+  { name: 'Shoe Size', icon: 'shoe-formal', iconSet: 'MaterialCommunityIcons' },
   { name: 'Speed', icon: 'speed' },
   { name: 'Temperature', icon: 'thermostat' },
   { name: 'Time', icon: 'access-time' },
+  { name: 'Torque', icon: 'settings' },
   { name: 'Volume', icon: 'invert-colors' },
   { name: 'Weight', icon: 'fitness-center' },
 ];
@@ -98,12 +119,30 @@ const HomeScreen: React.FC<{ navigation: HomeScreenNavigationProp }> = ({ naviga
                   navigation.navigate('Power');
                 } else if (cat.name === 'Pressure') {
                   navigation.navigate('Pressure');
+                } else if (cat.name === 'Currency') {
+                  navigation.navigate('Currency');
+                } else if (cat.name === 'Angle') {
+                  navigation.navigate('Angle');
+                } else if (cat.name === 'Energy') {
+                  navigation.navigate('Energy');
+                } else if (cat.name === 'Force') {
+                  navigation.navigate('Force');
+                } else if (cat.name === 'Torque') {
+                  navigation.navigate('Torque');
+                } else if (cat.name === 'Shoe Size') {
+                  navigation.navigate('ShoeSize');
+                } else if (cat.name === 'Data Speed') {
+                  navigation.navigate('DataSpeed');
                 } else {
                   navigation.navigate('Category', { name: cat.name });
                 }
               }}
             >
-              <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
+                {cat.iconSet === 'MaterialCommunityIcons' ? (
+                <MaterialCommunityIcons name={cat.icon as any} size={50} color="#6200ee" />
+              ) : (
+                <MaterialIcons name={cat.icon as any} size={50} color="#6200ee" />
+              )}
               <Text style={styles.cardText}>{cat.name}</Text>
             </TouchableOpacity>
           ))}
@@ -156,6 +195,13 @@ export default function App() {
         <Stack.Screen name="FuelMileage" component={FuelMileage} />
         <Stack.Screen name="Power" component={Power} />
         <Stack.Screen name="Pressure" component={Pressure} />
+        <Stack.Screen name="Currency" component={Currency} />
+        <Stack.Screen name="Angle" component={Angle} />
+        <Stack.Screen name="Energy" component={Energy} />
+        <Stack.Screen name="Force" component={Force} />
+        <Stack.Screen name="Torque" component={Torque} />
+        <Stack.Screen name="ShoeSize" component={ShoeSize} />
+        <Stack.Screen name="DataSpeed" component={DataSpeed} />
         <Stack.Screen name="Category" component={CategoryScreen} />
       </Stack.Navigator>
     </SafeAreaProvider>
@@ -180,8 +226,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     borderRadius: 12,
-    padding: 10,
-    margin: 8,
+    padding: 6,
+    margin: 5,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -199,9 +245,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginBottom: 20,
     textAlign: 'center',
   },
   subtitle: {

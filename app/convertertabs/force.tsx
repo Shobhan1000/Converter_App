@@ -1,70 +1,66 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const weightUnits = ['Grams', 'Kilograms', 'Pounds', 'Ounces', 'Stones', 'Milligrams', 'Micrograms', 'Tonnes', 'Long Tons', 'Short Tons', 'Carats', 'Atomic Mass Units', 'Slugs', 'Drachms', 'Grains', 'Troy Ounces', 'Troy Pounds', 'Pennyweights', 'Hogsheads', 'Quarters', 'Hundredweights', 'Metric Tons'];
+const forceUnits = ['Newtons', 'Kilonewtons', 'Pounds', 'Ounces', 'Dynes', 'Kilograms-force', 'Poundals', 'Tons-force', 'Kiloponds', 'Millinewtons', 'Micronewtons', 'Meganewtons', 'Gigapascals', 'Bars', 'Atmospheres', 'Pascals', 'Hectopascals', 'Kilopascals', 'Megapascals'];
 
-const Weight: React.FC = () => {
+const Force: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [fromUnit, setFromUnit] = useState('Grams');
-  const [toUnit, setToUnit] = useState('Kilograms');
+  const [fromUnit, setFromUnit] = useState('Newtons');
+  const [toUnit, setToUnit] = useState('Kilonewtons');
   const [result, setResult] = useState('');
 
     const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
 
-    let grams: number;
+    // Convert input to Newtons
+    let newtons: number;
     switch (from) {
-        case 'Grams': grams = val; break;
-        case 'Kilograms': grams = val * 1000; break;
-        case 'Pounds': grams = val * 453.59237; break;
-        case 'Ounces': grams = val * 28.3495231; break;
-        case 'Stones': grams = val * 6350.29318; break;
-        case 'Milligrams': grams = val * 0.001; break;
-        case 'Micrograms': grams = val * 1e-6; break;
-        case 'Tonnes': grams = val * 1e6; break;
-        case 'Long Tons': grams = val * 1.0160469088e6; break;
-        case 'Short Tons': grams = val * 907184.74; break;
-        case 'Carats': grams = val * 0.2; break;
-        case 'Atomic Mass Units': grams = val * 1.66053906660e-24; break;
-        case 'Slugs': grams = val * 14593.903; break;
-        case 'Drachms': grams = val * 1.7718451953125; break;
-        case 'Grains': grams = val * 0.06479891; break;
-        case 'Troy Ounces': grams = val * 31.1034768; break;
-        case 'Troy Pounds': grams = val * 373.2417216; break;
-        case 'Pennyweights': grams = val * 1.55517384; break;
-        case 'Hogsheads': grams = val * 23848000; break; // Approximate, depends on substance
-        case 'Quarters': grams = val * 12700.58636; break; // UK quarter
-        case 'Hundredweights': grams = val * 50802.34544; break; // UK cwt
-        case 'Metric Tons': grams = val * 1e6; break;
-        default: grams = val;
+        case 'Newtons': newtons = val; break;
+        case 'Kilonewtons': newtons = val * 1e3; break;
+        case 'Pounds': newtons = val * 4.4482216153; break;
+        case 'Ounces': newtons = val * 0.27801385095378125; break;
+        case 'Dynes': newtons = val * 1e-5; break;
+        case 'Kilograms-force': newtons = val * 9.80665; break;
+        case 'Poundals': newtons = val * 0.1382549544; break;
+        case 'Tons-force': newtons = val * 8896.443230521; break; // metric ton-force
+        case 'Kiloponds': newtons = val * 9.80665; break;
+        case 'Millinewtons': newtons = val * 1e-3; break;
+        case 'Micronewtons': newtons = val * 1e-6; break;
+        case 'Meganewtons': newtons = val * 1e6; break;
+        case 'Gigapascals': newtons = val * 1e9; break; // 1 GPa = 1e9 N/m² (if area = 1 m²)
+        case 'Bars': newtons = val * 1e5; break; // 1 bar = 1e5 N/m² (if area = 1 m²)
+        case 'Atmospheres': newtons = val * 101325; break; // 1 atm = 101325 N/m² (if area = 1 m²)
+        case 'Pascals': newtons = val * 1; break; // 1 Pa = 1 N/m² (if area = 1 m²)
+        case 'Hectopascals': newtons = val * 100; break;
+        case 'Kilopascals': newtons = val * 1000; break;
+        case 'Megapascals': newtons = val * 1e6; break;
+        default: newtons = val;
     }
 
+    // Convert Newtons to target unit
     let converted: number;
     switch (to) {
-        case 'Grams': converted = grams; break;
-        case 'Kilograms': converted = grams / 1000; break;
-        case 'Pounds': converted = grams / 453.59237; break;
-        case 'Ounces': converted = grams / 28.3495231; break;
-        case 'Stones': converted = grams / 6350.29318; break;
-        case 'Milligrams': converted = grams / 0.001; break;
-        case 'Micrograms': converted = grams / 1e-6; break;
-        case 'Tonnes': converted = grams / 1e6; break;
-        case 'Long Tons': converted = grams / 1.0160469088e6; break;
-        case 'Short Tons': converted = grams / 907184.74; break;
-        case 'Carats': converted = grams / 0.2; break;
-        case 'Atomic Mass Units': converted = grams / 1.66053906660e-24; break;
-        case 'Slugs': converted = grams / 14593.903; break;
-        case 'Drachms': converted = grams / 1.7718451953125; break;
-        case 'Grains': converted = grams / 0.06479891; break;
-        case 'Troy Ounces': converted = grams / 31.1034768; break;
-        case 'Troy Pounds': converted = grams / 373.2417216; break;
-        case 'Pennyweights': converted = grams / 1.55517384; break;
-        case 'Hogsheads': converted = grams / 23848000; break; // Approximate
-        case 'Quarters': converted = grams / 12700.58636; break;
-        case 'Hundredweights': converted = grams / 50802.34544; break;
-        case 'Metric Tons': converted = grams / 1e6; break;
-        default: converted = grams;
+        case 'Newtons': converted = newtons; break;
+        case 'Kilonewtons': converted = newtons / 1e3; break;
+        case 'Pounds': converted = newtons / 4.4482216153; break;
+        case 'Ounces': converted = newtons / 0.27801385095378125; break;
+        case 'Dynes': converted = newtons / 1e-5; break;
+        case 'Kilograms-force': converted = newtons / 9.80665; break;
+        case 'Poundals': converted = newtons / 0.1382549544; break;
+        case 'Tons-force': converted = newtons / 8896.443230521; break;
+        case 'Kiloponds': converted = newtons / 9.80665; break;
+        case 'Millinewtons': converted = newtons / 1e-3; break;
+        case 'Micronewtons': converted = newtons / 1e-6; break;
+        case 'Meganewtons': converted = newtons / 1e6; break;
+        case 'Gigapascals': converted = newtons / 1e9; break;
+        case 'Bars': converted = newtons / 1e5; break;
+        case 'Atmospheres': converted = newtons / 101325; break;
+        case 'Pascals': converted = newtons / 1; break;
+        case 'Hectopascals': converted = newtons / 100; break;
+        case 'Kilopascals': converted = newtons / 1000; break;
+        case 'Megapascals': converted = newtons / 1e6; break;
+        default: converted = newtons;
     }
 
     setResult(converted.toFixed(6));
@@ -115,7 +111,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>From</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {forceUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === fromUnit && styles.activeUnit]}
@@ -131,7 +127,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>To</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {forceUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === toUnit && styles.activeUnit]}
@@ -168,7 +164,7 @@ const Weight: React.FC = () => {
   );
 };
 
-export default Weight;
+export default Force;
 
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#f6f6f6' },

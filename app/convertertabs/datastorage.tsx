@@ -61,6 +61,9 @@ const DataStore: React.FC = () => {
       setToUnit(temp);
       convert(inputValue, toUnit, temp);
     } else {
+      // Prevent multiple dots
+      if (key === '.' && inputValue.includes('.')) return;
+
       const newValue = inputValue + key;
       setInputValue(newValue);
       convert(newValue, fromUnit, toUnit);

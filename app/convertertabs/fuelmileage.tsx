@@ -67,6 +67,9 @@ const FuelMileage: React.FC = () => {
       setToUnit(temp);
       convert(inputValue, toUnit, temp);
     } else {
+      // Prevent multiple dots
+      if (key === '.' && inputValue.includes('.')) return;
+
       const newValue = inputValue + key;
       setInputValue(newValue);
       convert(newValue, fromUnit, toUnit);
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
     elevation:2,
   },
   activeUnit: { backgroundColor:'#6200ee' },
-  unitText: { fontSize:14, color:'#000' },
+  unitText: { fontSize:14, color:'#000', textAlign:'center' },
   activeUnitText: { color:'#fff', fontWeight:'bold' },
 
   keypadContainer: { backgroundColor:'#eaeaea', padding:10, borderTopLeftRadius:20, borderTopRightRadius:20 },

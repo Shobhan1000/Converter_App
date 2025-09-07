@@ -65,6 +65,7 @@ const Distance: React.FC = () => {
 
     setResult(converted.toFixed(6));
     };
+    
   const handleKeyPress = (key: string) => {
     if (key === '⌫') {
       const newValue = inputValue.slice(0, -1);
@@ -76,6 +77,9 @@ const Distance: React.FC = () => {
       setToUnit(temp);
       convert(inputValue, toUnit, temp);
     } else {
+      // Prevent multiple dots
+      if (key === '.' && inputValue.includes('.')) return;
+
       const newValue = inputValue + key;
       setInputValue(newValue);
       convert(newValue, fromUnit, toUnit);

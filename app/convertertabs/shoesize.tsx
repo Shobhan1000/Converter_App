@@ -1,73 +1,42 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const weightUnits = ['Grams', 'Kilograms', 'Pounds', 'Ounces', 'Stones', 'Milligrams', 'Micrograms', 'Tonnes', 'Long Tons', 'Short Tons', 'Carats', 'Atomic Mass Units', 'Slugs', 'Drachms', 'Grains', 'Troy Ounces', 'Troy Pounds', 'Pennyweights', 'Hogsheads', 'Quarters', 'Hundredweights', 'Metric Tons'];
+const shoesizeUnits = ['US', 'UK', 'EU', 'CM', 'JP', 'AU', 'BR', 'MX', 'RU', 'CN', 'KR', 'IN', 'ZA', 'HK', 'TW', 'SG', 'MY', 'PH', 'TH', 'VN', 'ID', 'AR', 'CL', 'CO', 'PE', 'UY'];
 
-const Weight: React.FC = () => {
+const ShoeSize: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [fromUnit, setFromUnit] = useState('Grams');
-  const [toUnit, setToUnit] = useState('Kilograms');
+  const [fromUnit, setFromUnit] = useState('US');
+  const [toUnit, setToUnit] = useState('UK');
   const [result, setResult] = useState('');
+
+    const shoeSizeTable = [
+    [6, 5.5, 39, 24.5, 24.5, 5.5, 37, 24, 38, 39, 245, 6, 5.5, 39, 24.5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+    [7, 6.5, 40, 25, 25, 6.5, 38, 25, 39, 40, 250, 7, 6.5, 40, 25, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+    [8, 7.5, 41, 26, 26, 7.5, 39, 26, 40, 41, 260, 8, 7.5, 41, 26, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+    [9, 8.5, 42, 27, 27, 8.5, 40, 27, 41, 42, 270, 9, 8.5, 42, 27, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    [10, 9.5, 43, 28, 28, 9.5, 41, 28, 42, 43, 280, 10, 9.5, 43, 28, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+    [11, 10.5, 44, 29, 29, 10.5, 42, 29, 43, 44, 290, 11, 10.5, 44, 29, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11],
+    [12, 11.5, 45, 30, 30, 11.5, 43, 30, 44, 45, 300, 12, 11.5, 45, 30, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
+    ];
 
     const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
+    const fromIdx = shoesizeUnits.indexOf(from);
+    const toIdx = shoesizeUnits.indexOf(to);
+    if (fromIdx === -1 || toIdx === -1) { setResult(''); return; }
 
-    let grams: number;
-    switch (from) {
-        case 'Grams': grams = val; break;
-        case 'Kilograms': grams = val * 1000; break;
-        case 'Pounds': grams = val * 453.59237; break;
-        case 'Ounces': grams = val * 28.3495231; break;
-        case 'Stones': grams = val * 6350.29318; break;
-        case 'Milligrams': grams = val * 0.001; break;
-        case 'Micrograms': grams = val * 1e-6; break;
-        case 'Tonnes': grams = val * 1e6; break;
-        case 'Long Tons': grams = val * 1.0160469088e6; break;
-        case 'Short Tons': grams = val * 907184.74; break;
-        case 'Carats': grams = val * 0.2; break;
-        case 'Atomic Mass Units': grams = val * 1.66053906660e-24; break;
-        case 'Slugs': grams = val * 14593.903; break;
-        case 'Drachms': grams = val * 1.7718451953125; break;
-        case 'Grains': grams = val * 0.06479891; break;
-        case 'Troy Ounces': grams = val * 31.1034768; break;
-        case 'Troy Pounds': grams = val * 373.2417216; break;
-        case 'Pennyweights': grams = val * 1.55517384; break;
-        case 'Hogsheads': grams = val * 23848000; break; // Approximate, depends on substance
-        case 'Quarters': grams = val * 12700.58636; break; // UK quarter
-        case 'Hundredweights': grams = val * 50802.34544; break; // UK cwt
-        case 'Metric Tons': grams = val * 1e6; break;
-        default: grams = val;
+    // Find the closest row in the table for the input value
+    let closestRow = shoeSizeTable[0];
+    let minDiff = Math.abs(val - closestRow[fromIdx]);
+    for (let row of shoeSizeTable) {
+        const diff = Math.abs(val - row[fromIdx]);
+        if (diff < minDiff) {
+        minDiff = diff;
+        closestRow = row;
+        }
     }
-
-    let converted: number;
-    switch (to) {
-        case 'Grams': converted = grams; break;
-        case 'Kilograms': converted = grams / 1000; break;
-        case 'Pounds': converted = grams / 453.59237; break;
-        case 'Ounces': converted = grams / 28.3495231; break;
-        case 'Stones': converted = grams / 6350.29318; break;
-        case 'Milligrams': converted = grams / 0.001; break;
-        case 'Micrograms': converted = grams / 1e-6; break;
-        case 'Tonnes': converted = grams / 1e6; break;
-        case 'Long Tons': converted = grams / 1.0160469088e6; break;
-        case 'Short Tons': converted = grams / 907184.74; break;
-        case 'Carats': converted = grams / 0.2; break;
-        case 'Atomic Mass Units': converted = grams / 1.66053906660e-24; break;
-        case 'Slugs': converted = grams / 14593.903; break;
-        case 'Drachms': converted = grams / 1.7718451953125; break;
-        case 'Grains': converted = grams / 0.06479891; break;
-        case 'Troy Ounces': converted = grams / 31.1034768; break;
-        case 'Troy Pounds': converted = grams / 373.2417216; break;
-        case 'Pennyweights': converted = grams / 1.55517384; break;
-        case 'Hogsheads': converted = grams / 23848000; break; // Approximate
-        case 'Quarters': converted = grams / 12700.58636; break;
-        case 'Hundredweights': converted = grams / 50802.34544; break;
-        case 'Metric Tons': converted = grams / 1e6; break;
-        default: converted = grams;
-    }
-
-    setResult(converted.toFixed(6));
+    setResult(closestRow[toIdx].toString());
     };
 
   const handleKeyPress = (key: string) => {
@@ -115,7 +84,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>From</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {shoesizeUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === fromUnit && styles.activeUnit]}
@@ -131,7 +100,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>To</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {shoesizeUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === toUnit && styles.activeUnit]}
@@ -168,7 +137,7 @@ const Weight: React.FC = () => {
   );
 };
 
-export default Weight;
+export default ShoeSize;
 
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#f6f6f6' },

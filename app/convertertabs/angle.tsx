@@ -1,70 +1,52 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const weightUnits = ['Grams', 'Kilograms', 'Pounds', 'Ounces', 'Stones', 'Milligrams', 'Micrograms', 'Tonnes', 'Long Tons', 'Short Tons', 'Carats', 'Atomic Mass Units', 'Slugs', 'Drachms', 'Grains', 'Troy Ounces', 'Troy Pounds', 'Pennyweights', 'Hogsheads', 'Quarters', 'Hundredweights', 'Metric Tons'];
+const angleUnits = ['Degrees', 'Radians', 'Gradians', 'Turns', 'Arcminutes', 'Arcseconds', 'Milliradians', 'Microradians', 'Nautical Miles', 'Sextants', 'Points', 'Quadrants'];
 
-const Weight: React.FC = () => {
+const Angle: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [fromUnit, setFromUnit] = useState('Grams');
-  const [toUnit, setToUnit] = useState('Kilograms');
+  const [fromUnit, setFromUnit] = useState('Degrees');
+  const [toUnit, setToUnit] = useState('Radians');
   const [result, setResult] = useState('');
 
     const convert = (value: string, from: string, to: string) => {
     const val = parseFloat(value);
     if (isNaN(val)) { setResult(''); return; }
 
-    let grams: number;
+    // Convert input to degrees
+    let degrees: number;
     switch (from) {
-        case 'Grams': grams = val; break;
-        case 'Kilograms': grams = val * 1000; break;
-        case 'Pounds': grams = val * 453.59237; break;
-        case 'Ounces': grams = val * 28.3495231; break;
-        case 'Stones': grams = val * 6350.29318; break;
-        case 'Milligrams': grams = val * 0.001; break;
-        case 'Micrograms': grams = val * 1e-6; break;
-        case 'Tonnes': grams = val * 1e6; break;
-        case 'Long Tons': grams = val * 1.0160469088e6; break;
-        case 'Short Tons': grams = val * 907184.74; break;
-        case 'Carats': grams = val * 0.2; break;
-        case 'Atomic Mass Units': grams = val * 1.66053906660e-24; break;
-        case 'Slugs': grams = val * 14593.903; break;
-        case 'Drachms': grams = val * 1.7718451953125; break;
-        case 'Grains': grams = val * 0.06479891; break;
-        case 'Troy Ounces': grams = val * 31.1034768; break;
-        case 'Troy Pounds': grams = val * 373.2417216; break;
-        case 'Pennyweights': grams = val * 1.55517384; break;
-        case 'Hogsheads': grams = val * 23848000; break; // Approximate, depends on substance
-        case 'Quarters': grams = val * 12700.58636; break; // UK quarter
-        case 'Hundredweights': grams = val * 50802.34544; break; // UK cwt
-        case 'Metric Tons': grams = val * 1e6; break;
-        default: grams = val;
+        case 'Degrees': degrees = val; break;
+        case 'Radians': degrees = val * (180 / Math.PI); break;
+        case 'Gradians': degrees = val * 0.9; break;
+        case 'Turns': degrees = val * 360; break;
+        case 'Arcminutes': degrees = val / 60; break;
+        case 'Arcseconds': degrees = val / 3600; break;
+        case 'Milliradians': degrees = val * (180 / Math.PI) / 1000; break;
+        case 'Microradians': degrees = val * (180 / Math.PI) / 1e6; break;
+        case 'Nautical Miles': degrees = val * 21600; break; // 1 nautical mile = 1/21600 of a circle
+        case 'Sextants': degrees = val * 60; break; // 1 sextant = 60 degrees
+        case 'Points': degrees = val * 11.25; break; // 1 point = 11.25 degrees
+        case 'Quadrants': degrees = val * 90; break; // 1 quadrant = 90 degrees
+        default: degrees = val;
     }
 
+    // Convert degrees to target unit
     let converted: number;
     switch (to) {
-        case 'Grams': converted = grams; break;
-        case 'Kilograms': converted = grams / 1000; break;
-        case 'Pounds': converted = grams / 453.59237; break;
-        case 'Ounces': converted = grams / 28.3495231; break;
-        case 'Stones': converted = grams / 6350.29318; break;
-        case 'Milligrams': converted = grams / 0.001; break;
-        case 'Micrograms': converted = grams / 1e-6; break;
-        case 'Tonnes': converted = grams / 1e6; break;
-        case 'Long Tons': converted = grams / 1.0160469088e6; break;
-        case 'Short Tons': converted = grams / 907184.74; break;
-        case 'Carats': converted = grams / 0.2; break;
-        case 'Atomic Mass Units': converted = grams / 1.66053906660e-24; break;
-        case 'Slugs': converted = grams / 14593.903; break;
-        case 'Drachms': converted = grams / 1.7718451953125; break;
-        case 'Grains': converted = grams / 0.06479891; break;
-        case 'Troy Ounces': converted = grams / 31.1034768; break;
-        case 'Troy Pounds': converted = grams / 373.2417216; break;
-        case 'Pennyweights': converted = grams / 1.55517384; break;
-        case 'Hogsheads': converted = grams / 23848000; break; // Approximate
-        case 'Quarters': converted = grams / 12700.58636; break;
-        case 'Hundredweights': converted = grams / 50802.34544; break;
-        case 'Metric Tons': converted = grams / 1e6; break;
-        default: converted = grams;
+        case 'Degrees': converted = degrees; break;
+        case 'Radians': converted = degrees * (Math.PI / 180); break;
+        case 'Gradians': converted = degrees / 0.9; break;
+        case 'Turns': converted = degrees / 360; break;
+        case 'Arcminutes': converted = degrees * 60; break;
+        case 'Arcseconds': converted = degrees * 3600; break;
+        case 'Milliradians': converted = degrees * (Math.PI / 180) * 1000; break;
+        case 'Microradians': converted = degrees * (Math.PI / 180) * 1e6; break;
+        case 'Nautical Miles': converted = degrees / 21600; break;
+        case 'Sextants': converted = degrees / 60; break;
+        case 'Points': converted = degrees / 11.25; break;
+        case 'Quadrants': converted = degrees / 90; break;
+        default: converted = degrees;
     }
 
     setResult(converted.toFixed(6));
@@ -115,7 +97,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>From</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {angleUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === fromUnit && styles.activeUnit]}
@@ -131,7 +113,7 @@ const Weight: React.FC = () => {
         <View style={styles.unitColumn}>
           <Text style={styles.unitLabel}>To</Text>
           <ScrollView style={styles.unitScroll} showsVerticalScrollIndicator={false}>
-            {weightUnits.map(unit => (
+            {angleUnits.map(unit => (
               <TouchableOpacity
                 key={unit}
                 style={[styles.unitButton, unit === toUnit && styles.activeUnit]}
@@ -168,7 +150,7 @@ const Weight: React.FC = () => {
   );
 };
 
-export default Weight;
+export default Angle;
 
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#f6f6f6' },
