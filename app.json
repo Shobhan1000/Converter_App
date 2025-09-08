@@ -22,7 +22,8 @@
       "edgeToEdgeEnabled": true,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-xxxxxxxx~yyyyyyyyyy"
-      }
+      },
+      "package": "com.shobhan10.Converter_App"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +44,7 @@
       [
         "react-native-google-mobile-ads",
         {
-          "androidAppId": "ca-app-pub-5495693245816559~2094295114", 
+          "androidAppId": "ca-app-pub-5495693245816559~2094295114",
           "iosAppId": "ca-app-pub-5495693245816559~9362163628"
         }
       ]
